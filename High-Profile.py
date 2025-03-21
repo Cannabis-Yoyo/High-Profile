@@ -270,29 +270,63 @@ if uploaded_file:
     "Mozilla/5.0 (X11; Ubuntu; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36"
     ]
     
+    import streamlit as st
     from selenium import webdriver
     from selenium.webdriver.chrome.options import Options
     from selenium.webdriver.chrome.service import Service
     from webdriver_manager.chrome import ChromeDriverManager
-    from webdriver_manager.core.os_manager import ChromeType
-
+    import undetected_chromedriver.v2 as uc  # Import undetected_chromedriver
+    
+    # Setup Chrome options for headless mode (running without GUI)
+    options = Options()
+    options.add_argument("--disable-gpu")  # Disable GPU (recommended for headless)
+    options.add_argument("--headless")  # Running in headless mode (no GUI)
+    
+    # Use undetected-chromedriver with ChromeDriverManager to handle driver version
     @st.cache_resource
     def get_driver():
-        return webdriver.Chrome(
-            service=Service(
-                ChromeDriverManager(chrome_type=ChromeType.CHROMIUM).install()
-            ),
-            options=options,
+        # Initialize and use the undetected ChromeDriver manager
+        driver = uc.Chrome(
+            options=options, 
+            driver_executable_path=ChromeDriverManager().install()  # Ensure it installs the right version
         )
-
-    # options = Options()
-    options = uc.ChromeOptions()
-    options.add_argument("--disable-gpu")
-    options.add_argument("--headless")
-    driver = uc.Chrome(options=options)
-
+        return driver
+    
+    # Now, initialize the WebDriver using the updated method
     driver = get_driver()
-    st.code(driver.page_source)
+    
+    # Get the page source after loading the webpage
+    driver.get("https://highprofilecannabis.com")
+    st.code(driver.page_source)  # Display page source for debugging
+    
+    # Close the browser session
+    driver.quit()
+    
+
+    
+    # from selenium import webdriver
+    # from selenium.webdriver.chrome.options import Options
+    # from selenium.webdriver.chrome.service import Service
+    # from webdriver_manager.chrome import ChromeDriverManager
+    # from webdriver_manager.core.os_manager import ChromeType
+
+    # @st.cache_resource
+    # def get_driver():
+    #     return webdriver.Chrome(
+    #         service=Service(
+    #             ChromeDriverManager(chrome_type=ChromeType.CHROMIUM).install()
+    #         ),
+    #         options=options,
+    #     )
+
+    # # options = Options()
+    # options = uc.ChromeOptions()
+    # options.add_argument("--disable-gpu")
+    # options.add_argument("--headless")
+    # driver = uc.Chrome(options=options)
+
+    # driver = get_driver()
+    # st.code(driver.page_source)
 
 
     
