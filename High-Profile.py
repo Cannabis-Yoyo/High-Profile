@@ -285,10 +285,10 @@ if uploaded_file:
     # Use undetected-chromedriver with ChromeDriverManager to handle driver version
     @st.cache_resource
     def get_driver():
-        # Initialize and use the undetected ChromeDriver manager
+        # Automatically handles compatibility between Chrome and ChromeDriver
         driver = uc.Chrome(
-            options=options, 
-            driver_executable_path=ChromeDriverManager().install()  # Ensure it installs the right version
+            options=options,
+            driver_executable_path=ChromeDriverManager(chrome_type=ChromeType.CHROMIUM).install()  # Ensures compatibility with your browser
         )
         return driver
     
