@@ -12,6 +12,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+import undetected_chromedriver.v2 as uc
 import streamlit as st
 import sys
 import os
@@ -284,9 +285,11 @@ if uploaded_file:
             options=options,
         )
 
-    options = Options()
+    # options = Options()
+    options = uc.ChromeOptions()
     options.add_argument("--disable-gpu")
     options.add_argument("--headless")
+    driver = uc.Chrome(options=options)
 
     driver = get_driver()
     st.code(driver.page_source)
