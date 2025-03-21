@@ -271,11 +271,11 @@ if uploaded_file:
     ]
     
     import streamlit as st
-    from selenium import webdriver
     from selenium.webdriver.chrome.options import Options
-    from selenium.webdriver.chrome.service import Service
+    from selenium import webdriver
+    import undetected_chromedriver as uc  # Use undetected-chromedriver without v2
     from webdriver_manager.chrome import ChromeDriverManager
-    import undetected_chromedriver.v3 as uc  # Correctly import undetected-chromedriver
+    from webdriver_manager.core.os_manager import ChromeType
     
     # Setup Chrome options for headless mode (running without GUI)
     options = Options()
