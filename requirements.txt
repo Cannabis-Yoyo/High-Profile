@@ -8,4 +8,4 @@ rapidfuzz
 requests
 streamlit-lottie
 webdriver-manager
-undetected_chromedriver
+undetected_chromedriver.v2
