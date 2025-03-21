@@ -18,6 +18,7 @@ import os
 import requests
 import io
 from streamlit_lottie import st_lottie
+import shutil
 
 
 nltk.download('wordnet')
