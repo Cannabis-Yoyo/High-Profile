@@ -262,28 +262,52 @@ if uploaded_file:
         "AppleWebKit/537.36 (KHTML, like Gecko) "
         "Chrome/122.0.0.0 Safari/537.36"
     )
+
+    import streamlit as st
     from selenium import webdriver
     from selenium.webdriver.chrome.options import Options
-    from selenium.webdriver.chrome.service import Service
     from webdriver_manager.chrome import ChromeDriverManager
     from webdriver_manager.core.os_manager import ChromeType
     
     @st.cache_resource
     def get_driver():
         options = Options()
+        options.add_argument("--headless")  # Run in headless mode
         options.add_argument("--disable-gpu")
-        options.add_argument("--headless")  # Ensures headless mode
-        
-        return webdriver.Chrome(
-            service=Service(ChromeDriverManager(chrome_type=ChromeType.CHROMIUM).install()),
-            options=options,
-        )
-
-    # Specify the exact version of Chromium that you're using
-    chromedriver_path = ChromeDriverManager(version="114.0.5735.90").install()
+        options.add_argument("--no-sandbox")
+        options.add_argument("--disable-dev-shm-usage")
+        options.add_argument("--remote-debugging-port=9222")  # Enable remote debugging
     
-    # Create a Chrome driver with the specified version
-    driver = webdriver.Chrome(executable_path=chromedriver_path, options=options)
+        # Specify Chromium as the browser
+        driver_path = ChromeDriverManager(chrome_type=ChromeType.CHROMIUM).install()
+        return webdriver.Chrome(executable_path=driver_path, options=options)
+    
+    driver = get_driver()
+    driver.get("https://highprofilecannabis.com")
+    st.code(driver.page_source)
+    
+    # from selenium import webdriver
+    # from selenium.webdriver.chrome.options import Options
+    # from selenium.webdriver.chrome.service import Service
+    # from webdriver_manager.chrome import ChromeDriverManager
+    # from webdriver_manager.core.os_manager import ChromeType
+    
+    # @st.cache_resource
+    # def get_driver():
+    #     options = Options()
+    #     options.add_argument("--disable-gpu")
+    #     options.add_argument("--headless")  # Ensures headless mode
+        
+    #     return webdriver.Chrome(
+    #         service=Service(ChromeDriverManager(chrome_type=ChromeType.CHROMIUM).install()),
+    #         options=options,
+    #     )
+
+    # # Specify the exact version of Chromium that you're using
+    # chromedriver_path = ChromeDriverManager(version="114.0.5735.90").install()
+    
+    # # Create a Chrome driver with the specified version
+    # driver = webdriver.Chrome(executable_path=chromedriver_path, options=options)
     
     # def get_driver():
     #     # Auto-install the correct ChromeDriver version
