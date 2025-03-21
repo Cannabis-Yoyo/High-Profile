@@ -276,16 +276,17 @@ if uploaded_file:
         options.add_argument("--disable-gpu")
         options.add_argument("--no-sandbox")
         options.add_argument("--disable-dev-shm-usage")
-        options.add_argument("--remote-debugging-port=9222")  # Enable remote debugging
+        options.add_argument("--disable-software-rasterizer")  # Add this to disable rasterizer errors
     
-        # Use Service object to manage chromedriver
+        # Ensure latest version of Chromedriver is used
         service = Service(ChromeDriverManager(chrome_type=ChromeType.CHROMIUM).install())
-    
+        
         return webdriver.Chrome(service=service, options=options)
     
     driver = get_driver()
     driver.get("https://highprofilecannabis.com")
     st.code(driver.page_source)
+
 
     
     # from selenium import webdriver
