@@ -1,0 +1,8 @@
+streamlit
+pandas
+nltk
+openpyxl
+selenium
+rapidfuzz
+requests
+streamlit-lottie
