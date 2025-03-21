@@ -281,8 +281,8 @@ if uploaded_file:
     # Setup Chrome options for headless mode (running without GUI)
     options = Options()
     options.add_argument("--disable-gpu")
-    options.add_argument("--headless")  # Running in headless mode (you can comment this for testing)
-    options.add_argument("--no-sandbox")  # Disable the sandbox for cloud environments
+    # options.add_argument("--headless")  # Running in headless mode (you can comment this for testing)
+    # options.add_argument("--no-sandbox")  # Disable the sandbox for cloud environments
     options.add_argument("--disable-dev-shm-usage")  # Prevents errors related to shared memory (required for Docker/cloud environments)
     options.add_argument("window-size=1920x1080")  # Set a standard window size
     
