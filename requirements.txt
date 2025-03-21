@@ -6,4 +6,4 @@ selenium
 rapidfuzz
 requests
 streamlit-lottie
-chromedriver-autoinstaller
+webdriver-manager
