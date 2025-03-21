@@ -260,19 +260,19 @@ if uploaded_file:
         "Chrome/122.0.0.0 Safari/537.36"
     )
     def get_driver():
-        # Auto-install the compatible ChromeDriver version
+        # Auto-install the correct ChromeDriver version
         chromedriver_autoinstaller.install()
     
         # Set Chrome options
         chrome_options = Options()
-        chrome_options.add_argument("--headless")  # Ensure headless mode (No GUI)
+        chrome_options.add_argument("--headless")  # Ensure headless mode
         chrome_options.add_argument("--no-sandbox")
         chrome_options.add_argument("--disable-dev-shm-usage")
         chrome_options.add_argument("--disable-gpu")
         chrome_options.add_argument("--window-size=1920,1080")
     
         try:
-            # Try to launch Chrome
+            # Try launching Chrome
             driver = webdriver.Chrome(options=chrome_options)
             return driver
         except Exception as e:
