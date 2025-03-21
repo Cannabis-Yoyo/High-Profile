@@ -270,17 +270,21 @@ if uploaded_file:
     "Mozilla/5.0 (X11; Ubuntu; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36"
     ]
     
-    import streamlit as st
     from selenium.webdriver.chrome.options import Options
-    from selenium import webdriver
-    import undetected_chromedriver as uc  # Use undetected-chromedriver without v2
+    import undetected_chromedriver as uc
     from webdriver_manager.chrome import ChromeDriverManager
-    from webdriver_manager.core.os_manager import ChromeType
+    from selenium.webdriver.chrome.service import Service
+    from selenium.webdriver.support.ui import WebDriverWait
+    from selenium.webdriver.support import expected_conditions as EC
+    from selenium.webdriver.common.by import By
     
     # Setup Chrome options for headless mode (running without GUI)
     options = Options()
-    options.add_argument("--disable-gpu")  # Disable GPU (recommended for headless)
-    # options.add_argument("--headless")  # Running in headless mode (no GUI)
+    options.add_argument("--disable-gpu")
+    options.add_argument("--headless")  # Running in headless mode (you can comment this for testing)
+    options.add_argument("--no-sandbox")  # Disable the sandbox for cloud environments
+    options.add_argument("--disable-dev-shm-usage")  # Prevents errors related to shared memory (required for Docker/cloud environments)
+    options.add_argument("window-size=1920x1080")  # Set a standard window size
     
     # Use undetected-chromedriver with ChromeDriverManager to handle driver version
     @st.cache_resource
@@ -288,18 +292,29 @@ if uploaded_file:
         # Automatically handles compatibility between Chrome and ChromeDriver
         driver = uc.Chrome(
             options=options,
-            driver_executable_path=ChromeDriverManager(chrome_type=ChromeType.CHROMIUM).install()  # Ensures compatibility with your browser
+            driver_executable_path=ChromeDriverManager().install()  # Ensure it installs the right version
         )
         return driver
     
-    # Now, initialize the WebDriver using the updated method
+    # Initialize the WebDriver using the updated method
     driver = get_driver()
     
-    # Get the page source after loading the webpage
-    driver.get("https://highprofilecannabis.com")
-    st.code(driver.page_source)  # Display page source for debugging
+    # Example test to load a page
+    try:
+        driver.get("https://highprofilecannabis.com")
+        
+        # Wait for the body of the page to load (adjust as needed)
+        WebDriverWait(driver, 30).until(
+            EC.presence_of_element_located((By.XPATH, "//body"))
+        )
+        
+        st.code(driver.page_source)  # Display page source for debugging
     
-    # Close the browser session
+    except Exception as e:
+        st.error(f"Error loading page: {e}")
+        driver.quit()
+    
+    # Close the browser session after the task
     driver.quit()
     
 
