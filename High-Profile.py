@@ -20,6 +20,9 @@ import io
 from streamlit_lottie import st_lottie
 import shutil
 
+from webdriver_manager.chrome import ChromeDriverManager
+
+
 
 nltk.download('wordnet')
 lemmatizer = WordNetLemmatizer()
@@ -276,6 +279,11 @@ if uploaded_file:
             options=options,
         )
 
+    # Specify the exact version of Chromium that you're using
+    chromedriver_path = ChromeDriverManager(version="114.0.5735.90").install()
+    
+    # Create a Chrome driver with the specified version
+    driver = webdriver.Chrome(executable_path=chromedriver_path, options=options)
     
     # def get_driver():
     #     # Auto-install the correct ChromeDriver version
