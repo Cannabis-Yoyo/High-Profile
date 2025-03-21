@@ -258,18 +258,40 @@ if uploaded_file:
         "AppleWebKit/537.36 (KHTML, like Gecko) "
         "Chrome/122.0.0.0 Safari/537.36"
     )
-
     def get_driver():
+        # Ensure Chromium and Chromedriver exist in deployment environment
+        chrome_path = shutil.which("google-chrome") or shutil.which("chromium-browser") or shutil.which("chromium")
+        chromedriver_path = shutil.which("chromedriver")
+    
+        if not chrome_path or not chromedriver_path:
+            raise Exception("Chrome or Chromedriver not found in the system!")
+    
+        # Set Chrome options
         chrome_options = Options()
-        # For debugging: Remove headless option to run with GUI temporarily
-        # chrome_options.add_argument("--headless")  # You can comment this out to run in non-headless mode
-        chrome_options.add_argument("--disable-gpu")  # Disable GPU hardware acceleration
-        chrome_options.add_argument("--no-sandbox")  # Run without sandbox (important for some environments)
-        chrome_options.add_argument("window-size=1920x1080")  # Full screen to avoid rendering issues
-
-        driver = webdriver.Chrome(options=chrome_options)
-        driver.set_page_load_timeout(600)  # Set the page load timeout to 10 minutes
+        chrome_options.add_argument("--headless")  # Run Chrome in headless mode
+        chrome_options.add_argument("--no-sandbox")
+        chrome_options.add_argument("--disable-dev-shm-usage")
+        chrome_options.add_argument("--disable-gpu")
+        chrome_options.add_argument("--window-size=1920,1080")
+        
+        # Configure WebDriver service
+        service = Service(chromedriver_path)
+        driver = webdriver.Chrome(service=service, options=chrome_options)
+    
         return driver
+
+    
+    # def get_driver():
+    #     chrome_options = Options()
+    #     # For debugging: Remove headless option to run with GUI temporarily
+    #     # chrome_options.add_argument("--headless")  # You can comment this out to run in non-headless mode
+    #     chrome_options.add_argument("--disable-gpu")  # Disable GPU hardware acceleration
+    #     chrome_options.add_argument("--no-sandbox")  # Run without sandbox (important for some environments)
+    #     chrome_options.add_argument("window-size=1920x1080")  # Full screen to avoid rendering issues
+
+    #     driver = webdriver.Chrome(options=chrome_options)
+    #     driver.set_page_load_timeout(600)  # Set the page load timeout to 10 minutes
+    #     return driver
     
     def wait_for_page_load(driver, xpath, timeout=60):
         """Wait for a specific element to load on the page."""
