@@ -260,29 +260,23 @@ if uploaded_file:
         "Chrome/122.0.0.0 Safari/537.36"
     )
     def get_driver():
-        # Ensure Chromium and Chromedriver exist in deployment environment
-        chrome_path = shutil.which("google-chrome") or shutil.which("chromium-browser") or shutil.which("chromium")
-        chromedriver_path = shutil.which("chromedriver")
-    
-        if not chrome_path or not chromedriver_path:
-            raise Exception("Chrome or Chromedriver not found in the system!")
-    
-        # Automatically install the correct version of Chromedriver
+        # Auto-install the compatible ChromeDriver version
         chromedriver_autoinstaller.install()
     
         # Set Chrome options
         chrome_options = Options()
-        chrome_options.add_argument("--headless")  # Run Chrome in headless mode
+        chrome_options.add_argument("--headless")  # Ensure headless mode (No GUI)
         chrome_options.add_argument("--no-sandbox")
         chrome_options.add_argument("--disable-dev-shm-usage")
         chrome_options.add_argument("--disable-gpu")
         chrome_options.add_argument("--window-size=1920,1080")
-        
-        # Configure WebDriver service
-        service = Service(chromedriver_path)
-        driver = webdriver.Chrome(service=service, options=chrome_options)
     
-        return driver
+        try:
+            # Try to launch Chrome
+            driver = webdriver.Chrome(options=chrome_options)
+            return driver
+        except Exception as e:
+            raise Exception(f"Chrome launch failed: {e}")
     
     
     # def get_driver():
