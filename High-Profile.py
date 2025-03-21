@@ -263,14 +263,13 @@ if uploaded_file:
         "Chrome/122.0.0.0 Safari/537.36"
     )
     
-    with st.echo():
-        from selenium import webdriver
-        from selenium.webdriver.chrome.options import Options
-        from selenium.webdriver.chrome.service import Service
-        from webdriver_manager.chrome import ChromeDriverManager
-        from webdriver_manager.core.os_manager import ChromeType
-    
-        @st.cache_resource
+    from selenium import webdriver
+    from selenium.webdriver.chrome.options import Options
+    from selenium.webdriver.chrome.service import Service
+    from webdriver_manager.chrome import ChromeDriverManager
+    from webdriver_manager.core.os_manager import ChromeType
+        
+    @st.cache_resource
         def get_driver():
             return webdriver.Chrome(
                 service=Service(
@@ -278,11 +277,11 @@ if uploaded_file:
                 ),
                 options=options,
             )
-    
+        
         options = Options()
         options.add_argument("--disable-gpu")
         options.add_argument("--headless")
-
+    
         driver = get_driver()
         st.code(driver.page_source)
 
