@@ -9,10 +9,9 @@ from openpyxl import load_workbook
 from selenium import webdriver
 from rapidfuzz import fuzz
 from selenium.webdriver.common.by import By
-from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.firefox.options import Options  # Use Firefox options instead of Chrome options
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-import undetected_chromedriver as uc
 import streamlit as st
 import sys
 import os
@@ -20,8 +19,34 @@ import requests
 import io
 from streamlit_lottie import st_lottie
 import shutil
+from webdriver_manager.firefox import GeckoDriverManager  # Use GeckoDriverManager for Firefox
+from selenium.webdriver.firefox.service import Service  # Service for Firefox WebDriver
 
-from webdriver_manager.chrome import ChromeDriverManager
+
+# import time
+# import random
+# import re
+# import pandas as pd
+# import nltk
+# from fractions import Fraction
+# from nltk.stem import WordNetLemmatizer
+# from openpyxl import load_workbook
+# from selenium import webdriver
+# from rapidfuzz import fuzz
+# from selenium.webdriver.common.by import By
+# # from selenium.webdriver.chrome.options import Options
+# from selenium.webdriver.support.ui import WebDriverWait
+# from selenium.webdriver.support import expected_conditions as EC
+# # import undetected_chromedriver as uc
+# import streamlit as st
+# import sys
+# import os
+# import requests
+# import io
+# from streamlit_lottie import st_lottie
+# import shutil
+
+# # from webdriver_manager.chrome import ChromeDriverManager
 
 
 
@@ -270,36 +295,33 @@ if uploaded_file:
     "Mozilla/5.0 (X11; Ubuntu; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36"
     ]
     
-    from selenium.webdriver.chrome.options import Options
-    import undetected_chromedriver as uc
-    from webdriver_manager.chrome import ChromeDriverManager
-    from selenium.webdriver.chrome.service import Service
+    from selenium import webdriver
+    from selenium.webdriver.firefox.options import Options
+    from webdriver_manager.firefox import GeckoDriverManager
+    from selenium.webdriver.firefox.service import Service
+    from selenium.webdriver.common.by import By
     from selenium.webdriver.support.ui import WebDriverWait
     from selenium.webdriver.support import expected_conditions as EC
-    from selenium.webdriver.common.by import By
     
-    # Setup Chrome options for headless mode (running without GUI)
+    # Set up Firefox options for headless browsing
     options = Options()
-    options.add_argument("--disable-gpu")
-    # options.add_argument("--headless")  # Running in headless mode (you can comment this for testing)
-    # options.add_argument("--no-sandbox")  # Disable the sandbox for cloud environments
-    options.add_argument("--disable-dev-shm-usage")  # Prevents errors related to shared memory (required for Docker/cloud environments)
-    options.add_argument("window-size=1920x1080")  # Set a standard window size
+    options.add_argument("--headless")  # Run Firefox in headless mode
+    options.add_argument("--disable-gpu")  # Optional: Disable GPU for headless mode
     
-    # Use undetected-chromedriver with ChromeDriverManager to handle driver version
+    # Function to get the Firefox driver
     @st.cache_resource
     def get_driver():
-        # Automatically handles compatibility between Chrome and ChromeDriver
-        driver = uc.Chrome(
-            options=options,
-            driver_executable_path=ChromeDriverManager().install()  # Ensure it installs the right version
+        # Automatically install the correct version of GeckoDriver
+        driver = webdriver.Firefox(
+            service=Service(GeckoDriverManager().install()),  # Ensure the correct GeckoDriver is installed
+            options=options
         )
         return driver
-    
-    # Initialize the WebDriver using the updated method
+
+    # Initialize the Firefox driver using the updated method
     driver = get_driver()
     
-    # Example test to load a page
+    # Example to load a page using Firefox driver
     try:
         driver.get("https://highprofilecannabis.com")
         
@@ -316,6 +338,28 @@ if uploaded_file:
     
     # Close the browser session after the task
     driver.quit()
+
+    
+    # # Initialize the WebDriver using the updated method
+    # driver = get_driver()
+    
+    # # Example test to load a page
+    # try:
+    #     driver.get("https://highprofilecannabis.com")
+        
+    #     # Wait for the body of the page to load (adjust as needed)
+    #     WebDriverWait(driver, 30).until(
+    #         EC.presence_of_element_located((By.XPATH, "//body"))
+    #     )
+        
+    #     st.code(driver.page_source)  # Display page source for debugging
+    
+    # except Exception as e:
+    #     st.error(f"Error loading page: {e}")
+    #     driver.quit()
+    
+    # # Close the browser session after the task
+    # driver.quit()
     
 
     
