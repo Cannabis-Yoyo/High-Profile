@@ -275,7 +275,7 @@ if uploaded_file:
     from selenium.webdriver.chrome.options import Options
     from selenium.webdriver.chrome.service import Service
     from webdriver_manager.chrome import ChromeDriverManager
-    import undetected_chromedriver.v2 as uc  # Import undetected_chromedriver
+    import undetected_chromedriver as uc  # Correctly import undetected-chromedriver
     
     # Setup Chrome options for headless mode (running without GUI)
     options = Options()
