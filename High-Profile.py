@@ -267,6 +267,9 @@ if uploaded_file:
         if not chrome_path or not chromedriver_path:
             raise Exception("Chrome or Chromedriver not found in the system!")
     
+        # Automatically install the correct version of Chromedriver
+        chromedriver_autoinstaller.install()
+    
         # Set Chrome options
         chrome_options = Options()
         chrome_options.add_argument("--headless")  # Run Chrome in headless mode
@@ -280,6 +283,29 @@ if uploaded_file:
         driver = webdriver.Chrome(service=service, options=chrome_options)
     
         return driver
+    
+    
+    # def get_driver():
+    #     # Ensure Chromium and Chromedriver exist in deployment environment
+    #     chrome_path = shutil.which("google-chrome") or shutil.which("chromium-browser") or shutil.which("chromium")
+    #     chromedriver_path = shutil.which("chromedriver")
+    
+    #     if not chrome_path or not chromedriver_path:
+    #         raise Exception("Chrome or Chromedriver not found in the system!")
+    
+    #     # Set Chrome options
+    #     chrome_options = Options()
+    #     chrome_options.add_argument("--headless")  # Run Chrome in headless mode
+    #     chrome_options.add_argument("--no-sandbox")
+    #     chrome_options.add_argument("--disable-dev-shm-usage")
+    #     chrome_options.add_argument("--disable-gpu")
+    #     chrome_options.add_argument("--window-size=1920,1080")
+        
+    #     # Configure WebDriver service
+    #     service = Service(chromedriver_path)
+    #     driver = webdriver.Chrome(service=service, options=chrome_options)
+    
+    #     return driver
 
     
     # def get_driver():
