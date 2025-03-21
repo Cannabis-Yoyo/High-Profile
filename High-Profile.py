@@ -280,7 +280,7 @@ if uploaded_file:
     # Setup Chrome options for headless mode (running without GUI)
     options = Options()
     options.add_argument("--disable-gpu")  # Disable GPU (recommended for headless)
-    options.add_argument("--headless")  # Running in headless mode (no GUI)
+    # options.add_argument("--headless")  # Running in headless mode (no GUI)
     
     # Use undetected-chromedriver with ChromeDriverManager to handle driver version
     @st.cache_resource
