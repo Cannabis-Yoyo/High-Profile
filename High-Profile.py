@@ -259,24 +259,42 @@ if uploaded_file:
         "AppleWebKit/537.36 (KHTML, like Gecko) "
         "Chrome/122.0.0.0 Safari/537.36"
     )
+    from selenium import webdriver
+    from selenium.webdriver.chrome.options import Options
+    from selenium.webdriver.chrome.service import Service
+    from webdriver_manager.chrome import ChromeDriverManager
+    from webdriver_manager.core.os_manager import ChromeType
+    
+    @st.cache_resource
     def get_driver():
-        # Auto-install the correct ChromeDriver version
-        chromedriver_autoinstaller.install()
+        options = Options()
+        options.add_argument("--disable-gpu")
+        options.add_argument("--headless")  # Ensures headless mode
+        
+        return webdriver.Chrome(
+            service=Service(ChromeDriverManager(chrome_type=ChromeType.CHROMIUM).install()),
+            options=options,
+        )
+
     
-        # Set Chrome options
-        chrome_options = Options()
-        chrome_options.add_argument("--headless")  # Run headless mode
-        chrome_options.add_argument("--no-sandbox")
-        chrome_options.add_argument("--disable-dev-shm-usage")
-        chrome_options.add_argument("--disable-gpu")
-        chrome_options.add_argument("--window-size=1920,1080")
+    # def get_driver():
+    #     # Auto-install the correct ChromeDriver version
+    #     chromedriver_autoinstaller.install()
     
-        try:
-            # Try launching Chrome
-            driver = webdriver.Chrome(options=chrome_options)
-            return driver
-        except Exception as e:
-            raise Exception(f"Chrome launch failed: {e}")
+    #     # Set Chrome options
+    #     chrome_options = Options()
+    #     chrome_options.add_argument("--headless")  # Run headless mode
+    #     chrome_options.add_argument("--no-sandbox")
+    #     chrome_options.add_argument("--disable-dev-shm-usage")
+    #     chrome_options.add_argument("--disable-gpu")
+    #     chrome_options.add_argument("--window-size=1920,1080")
+    
+    #     try:
+    #         # Try launching Chrome
+    #         driver = webdriver.Chrome(options=chrome_options)
+    #         return driver
+    #     except Exception as e:
+    #         raise Exception(f"Chrome launch failed: {e}")
     
     
     # def get_driver():
